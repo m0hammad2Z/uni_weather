@@ -37,16 +37,8 @@ Widget bottomWidget(
               fontSize: 19.5,
               fontStyle: FontStyle.normal,
               fontWeight: FontWeight.bold),
-        )
+        ),
       ],
     ),
   );
-}
-
-Widget centerWidget(
-  String day,
-  Icon ico,
-  int temperature,
-) {
-  return Container();
 }
