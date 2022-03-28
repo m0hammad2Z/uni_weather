@@ -12,9 +12,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      //theme: ThemeData(
-      //  primarySwatch: Colors.blue,
-      //),
+      theme: ThemeData(
+        elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ButtonStyle(
+                elevation: MaterialStateProperty.resolveWith((states) {
+          return 0;
+        }), backgroundColor: MaterialStateProperty.resolveWith((states) {
+          return Colors.transparent;
+        }))),
+      ),
       home: HomePage(),
     );
   }

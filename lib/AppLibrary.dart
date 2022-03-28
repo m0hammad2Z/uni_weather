@@ -16,7 +16,7 @@ Widget orignalAppButton = Container(
         children: [
           IconButton(
             iconSize: 28.5,
-            color: Colors.blue,
+            color: Colors.white,
             onPressed: () {},
             icon: Icon(Icons.dark_mode_sharp),
           ),
@@ -56,7 +56,7 @@ Widget orignalAppButton = Container(
                           style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
-                            color: Colors.black,
+                            color: Color.fromARGB(253, 243, 240, 240),
                           ),
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -71,7 +71,7 @@ Widget orignalAppButton = Container(
                 ;
               },
               icon: const Icon(
-                Icons.keyboard_arrow_down_outlined,
+                Icons.arrow_drop_down_circle_rounded,
               ),
               iconSize: 25,
               iconEnabledColor: Colors.white,
@@ -81,8 +81,8 @@ Widget orignalAppButton = Container(
               buttonPadding: const EdgeInsets.only(left: 9, right: 8),
               buttonDecoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: Colors.white),
-                color: Colors.blue,
+                border: Border.all(color: Color.fromARGB(0, 255, 255, 255)),
+                color: Color.fromARGB(64, 33, 149, 243),
               ),
               buttonElevation: 5,
               itemHeight: 45,
@@ -92,7 +92,7 @@ Widget orignalAppButton = Container(
               dropdownPadding: null,
               dropdownDecoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(7),
-                color: Colors.cyan,
+                color: Color.fromARGB(64, 33, 149, 243),
               ),
               dropdownElevation: 8,
               scrollbarRadius: const Radius.circular(40),
@@ -104,56 +104,79 @@ Widget orignalAppButton = Container(
           ////////////////////////////////
           IconButton(
             iconSize: 28.5,
-            color: Colors.blue,
+            color: Colors.white,
             onPressed: () {},
             icon: Icon(Icons.language),
           ),
         ],
       ),
-      Image.asset("images/sun.png"),
+      SizedBox(
+        height: 40,
+      ),
+      Text(
+        "Hashemite University HU",
+        textAlign: TextAlign.center,
+        style: TextStyle(color: Colors.white, fontSize: 22, letterSpacing: 1.8),
+      ),
+      SizedBox(
+        height: 20,
+      ),
+      Image.asset(
+        "images/sun.png",
+        width: 220,
+        height: 220,
+      ),
+      Text(
+        "27℃",
+        textAlign: TextAlign.center,
+        style: TextStyle(color: Colors.white, fontSize: 80, letterSpacing: 1.8),
+      ),
     ],
   ),
 );
 
-Widget bottomWidget(
-  String day,
-  Icon ico,
-  int temperature,
-) {
+Widget BottomButtonsContainer({Row? row}) {
   return Container(
-    padding: EdgeInsets.only(top: 8),
-    child: Column(
-      children: [
-        Text(
-          day,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              letterSpacing: 1.8),
-        ),
-        SizedBox(
-          height: 15,
-        ),
-        Icon(
-          Icons.sunny,
-          color: Colors.white,
-          size: 32,
-        ),
-        SizedBox(
-          height: 5,
-        ),
-        Text(
-          temperature.toString() + "℃",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              color: Color.fromARGB(255, 250, 246, 246),
-              fontSize: 19.5,
-              fontStyle: FontStyle.normal,
-              fontWeight: FontWeight.bold),
-        )
-      ],
-    ),
+    decoration: const BoxDecoration(
+        color: Color.fromARGB(24, 33, 149, 243),
+        boxShadow: [
+          BoxShadow(
+              color: Color.fromARGB(47, 0, 0, 0),
+              blurRadius: 70,
+              spreadRadius: 0.001)
+        ],
+        borderRadius: BorderRadius.vertical(top: Radius.circular(32))),
+    height: 120,
+    child: row,
   );
+}
+
+ElevatedButton BottomButton(
+    {required String? imagePath,
+    required String? dayName,
+    required VoidCallback? onpressed}) {
+  return ElevatedButton(
+      onPressed: onpressed,
+      child: Container(
+        padding: EdgeInsets.only(top: 20, bottom: 20),
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Text(
+            dayName!,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 1.8),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Image.asset(
+            "images/sun.png",
+            width: 51,
+            height: 51,
+          )
+        ]),
+      ));
 }
