@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uni_weathar/HomePage.dart';
 
-
 void main() {
   runApp(const MyApp());
 }
