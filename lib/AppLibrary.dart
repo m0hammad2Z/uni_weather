@@ -80,10 +80,8 @@ Widget orignalAppButton = Container(
               buttonWidth: 230,
               buttonPadding: const EdgeInsets.only(left: 9, right: 8),
               buttonDecoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: Colors.black26,
-                ),
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: Colors.white),
                 color: Colors.blue,
               ),
               buttonElevation: 5,
@@ -112,6 +110,7 @@ Widget orignalAppButton = Container(
           ),
         ],
       ),
+      Image.asset("images/sun.png"),
     ],
   ),
 );
