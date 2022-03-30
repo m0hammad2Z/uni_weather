@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:weather/weather.dart';
@@ -171,27 +173,28 @@ ElevatedButton BottomButton(
     required String? dayName,
     required VoidCallback? onpressed}) {
   return ElevatedButton(
-      onPressed: onpressed,
-      child: Container(
-        padding: EdgeInsets.only(top: 20, bottom: 20),
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Text(
-            dayName!,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 1.8),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Image.asset(
-            "images/sun.png",
-            width: 51,
-            height: 51,
-          )
-        ]),
-      ));
+    onPressed: onpressed,
+    child: Container(
+      padding: EdgeInsets.only(top: 20, bottom: 20),
+      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Text(
+          dayName!,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 1.8),
+        ),
+        SizedBox(
+          height: 20,
+        ),
+        Image.asset(
+          "images/sun.png",
+          width: 51,
+          height: 51,
+        )
+      ]),
+    ),
+  );
 }

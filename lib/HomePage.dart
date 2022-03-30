@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:uni_weathar/AppLibrary.dart';
 
@@ -9,55 +10,72 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  List<String> backWall = [
+    "1.jpg",
+    "2.jpg",
+    "3.jpg",
+    "4.jpg",
+    "5.jpg",
+    "6.jpg",
+    "7.jpg",
+    "8.jpg",
+  ];
+  String imageChange() {
+    Random randomNumberGen = Random();
+    int index = randomNumberGen.nextInt(backWall.length);
+    return backWall[index];
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: Container(
         constraints: BoxConstraints.expand(),
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           image: DecorationImage(
-              image: NetworkImage(
-                  "https://i.pinimg.com/564x/4d/4c/3b/4d4c3b6d5489533ca9a3f03a5a986b41.jpg"),
-              fit: BoxFit.cover),
-        ),
-        child: Scaffold(
-          backgroundColor: Colors.transparent,
-          body: Column(
-            children: [
-              Expanded(
-                flex: 5,
-                child: orignalAppButton,
-              ),
-              SizedBox(
-                height: 160,
-                child: BottomButtonsContainer(
-                    row: Row(
-                  children: [
-                    Expanded(
-                        child: BottomButton(
-                            imagePath: "images/sun.png",
-                            dayName: "Sunday",
-                            onpressed: () {
-                              print("object");
-                            })),
-                    Expanded(
-                        child: BottomButton(
-                            imagePath: "images/sun.png",
-                            dayName: "Monday",
-                            onpressed: () {
-                              print("object");
-                            })),
-                    Expanded(
-                        child: BottomButton(
-                            imagePath: "images/sun.png",
-                            dayName: "Thusday",
-                            onpressed: () {
-                              print("object");
-                            }))
-                  ],
-                )),
-              )
-            ],
+            image: AssetImage("background/${imageChange()}"),
+            fit: BoxFit.cover,
           ),
-        ));
+        ),
+        child: Column(
+          children: [
+            Expanded(
+              flex: 5,
+              child: orignalAppButton,
+            ),
+            SizedBox(
+              height: 160,
+              child: BottomButtonsContainer(
+                  row: Row(
+                children: [
+                  Expanded(
+                      child: BottomButton(
+                          imagePath: "images/sun.png",
+                          dayName: "Sunday",
+                          onpressed: () {
+                            print("object");
+                          })),
+                  Expanded(
+                      child: BottomButton(
+                          imagePath: "images/sun.png",
+                          dayName: "Monday",
+                          onpressed: () {
+                            print("object");
+                          })),
+                  Expanded(
+                      child: BottomButton(
+                          imagePath: "images/sun.png",
+                          dayName: "Thusday",
+                          onpressed: () {
+                            print("object");
+                          }))
+                ],
+              )),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
