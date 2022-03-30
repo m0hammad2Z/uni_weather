@@ -7,6 +7,16 @@ List<String> items = [
   'Hashemite University HU',
   'University of Jordan JU',
 ];
+//List items = [
+//  {
+//    "name": 'Hashemite University HU',
+//    "image": "HU.png",
+//  },
+//  {
+//    "name": 'University of Jordan JU',
+//    "image": "HU.png",
+//  },
+//];
 Widget orignalAppButton = Container(
   margin: EdgeInsets.only(top: 40, left: 7, right: 7),
   child: Column(
@@ -56,7 +66,7 @@ Widget orignalAppButton = Container(
                           style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
-                            color: Color.fromARGB(253, 243, 240, 240),
+                            color: Colors.white,
                           ),
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -92,13 +102,14 @@ Widget orignalAppButton = Container(
               dropdownPadding: null,
               dropdownDecoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(7),
-                color: Color.fromARGB(64, 33, 149, 243),
+                color: Color.fromARGB(207, 96, 182, 253),
               ),
               dropdownElevation: 8,
               scrollbarRadius: const Radius.circular(40),
               scrollbarThickness: 6,
               scrollbarAlwaysShow: true,
               offset: const Offset(0, 0),
+              iconOnClick: Icon(Icons.arrow_drop_up_rounded),
             ),
           ),
           ////////////////////////////////
@@ -111,12 +122,16 @@ Widget orignalAppButton = Container(
         ],
       ),
       SizedBox(
-        height: 40,
+        height: 30,
       ),
       Text(
         "Hashemite University HU",
         textAlign: TextAlign.center,
-        style: TextStyle(color: Colors.white, fontSize: 22, letterSpacing: 1.8),
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 22,
+          letterSpacing: 1.8,
+        ),
       ),
       SizedBox(
         height: 20,
