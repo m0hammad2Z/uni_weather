@@ -7,14 +7,14 @@ int index = 0;
 List items = [
   {
     "name": 'Hashemite University HU',
-    "late": 32.3302851628523,
-    "long": 35.750161191023956,
+    "late": 32.10305575958137,
+    "long": 36.18116441243424,
     "image": "HU.png",
   },
   {
     "name": 'University of Jordan JU',
-    "late": 66.30441020818137,
-    "long": 42.76678922896176,
+    "late": 32.01623213871158,
+    "long": 35.86969580079599,
     "image": "HU.png",
   },
 ];
