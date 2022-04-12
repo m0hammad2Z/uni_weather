@@ -1,156 +1,157 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:weather/weather.dart';
 
-String? selectedValue;
-List<String> items = [
-  'Hashemite University HU',
-  'University of Jordan JU',
+String? selectedValue = items[0]['name'];
+int index = 0;
+
+List items = [
+  {
+    "name": 'Hashemite University HU',
+    "late": 32.3302851628523,
+    "long": 35.750161191023956,
+    "image": "HU.png",
+  },
+  {
+    "name": 'University of Jordan JU',
+    "late": 66.30441020818137,
+    "long": 42.76678922896176,
+    "image": "HU.png",
+  },
 ];
-//List items = [
-//  {
-//    "name": 'Hashemite University HU',
-//    "image": "HU.png",
-//  },
-//  {
-//    "name": 'University of Jordan JU',
-//    "image": "HU.png",
-//  },
-//];
-Widget orignalAppButton = Container(
-  margin: EdgeInsets.only(top: 40, left: 7, right: 7),
-  child: Column(
-    children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          IconButton(
-            iconSize: 28.5,
-            color: Colors.white,
-            onPressed: () {},
-            icon: Icon(Icons.dark_mode_sharp),
-          ),
-          /////////////////////////
-          DropdownButtonHideUnderline(
-            child: DropdownButton2(
-              isExpanded: true,
-              hint: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: const [
-                  Icon(
-                    Icons.school_sharp,
-                    size: 20,
-                    color: Colors.white,
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Expanded(
-                    child: Text(
-                      'Select University',
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
-              ),
-              items: items
-                  .map((item) => DropdownMenuItem<String>(
-                        value: item,
-                        child: Text(
-                          item,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ))
-                  .toList(),
-              value: selectedValue,
-              onChanged: (value) {
-                setState() {
-                  selectedValue = value as String;
-                }
 
-                ;
-              },
-              icon: const Icon(
-                Icons.arrow_drop_down_circle_rounded,
-              ),
-              iconSize: 25,
-              iconEnabledColor: Colors.white,
-              iconDisabledColor: Colors.grey,
-              buttonHeight: 50,
-              buttonWidth: 230,
-              buttonPadding: const EdgeInsets.only(left: 9, right: 8),
-              buttonDecoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: Color.fromARGB(0, 255, 255, 255)),
-                color: Color.fromARGB(64, 33, 149, 243),
-              ),
-              buttonElevation: 5,
-              itemHeight: 45,
-              itemPadding: const EdgeInsets.only(left: 20, right: 14),
-              dropdownMaxHeight: 200,
-              dropdownWidth: 230,
-              dropdownPadding: null,
-              dropdownDecoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(7),
-                color: Color.fromARGB(207, 96, 182, 253),
-              ),
-              dropdownElevation: 8,
-              scrollbarRadius: const Radius.circular(40),
-              scrollbarThickness: 6,
-              scrollbarAlwaysShow: true,
-              offset: const Offset(0, 0),
-              iconOnClick: Icon(Icons.arrow_drop_up_rounded),
+Widget orignalAppButton(
+    {required String? universityName,
+    required String? tempreture,
+    required String? path,
+    required VoidCallback? onChange(value)}) {
+  return Container(
+    margin: EdgeInsets.only(top: 40, left: 7, right: 7),
+    child: Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(
+              iconSize: 28.5,
+              color: Colors.white,
+              onPressed: () {},
+              icon: Icon(Icons.dark_mode_sharp),
             ),
-          ),
-          ////////////////////////////////
-          IconButton(
-            iconSize: 28.5,
-            color: Colors.white,
-            onPressed: () {},
-            icon: Icon(Icons.language),
-          ),
-        ],
-      ),
-      SizedBox(
-        height: 30,
-      ),
-      Text(
-        "Hashemite University HU",
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 22,
-          letterSpacing: 1.8,
+            /////////////////////////
+            DropdownButtonHideUnderline(
+              child: DropdownButton2(
+                isExpanded: true,
+                hint: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: const [
+                    Icon(
+                      Icons.school_sharp,
+                      size: 20,
+                      color: Colors.white,
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Expanded(
+                      child: Text(
+                        'Select University',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+                items: items
+                    .map((item) => DropdownMenuItem<String>(
+                          value: item['name'],
+                          child: Text(
+                            item['name'],
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ))
+                    .toList(),
+                value: selectedValue,
+                onChanged: onChange,
+                icon: const Icon(
+                  Icons.arrow_drop_down_circle_rounded,
+                ),
+                iconSize: 25,
+                iconEnabledColor: Colors.white,
+                iconDisabledColor: Colors.grey,
+                buttonHeight: 50,
+                buttonWidth: 230,
+                buttonPadding: const EdgeInsets.only(left: 9, right: 8),
+                buttonDecoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: Color.fromARGB(0, 255, 255, 255)),
+                  color: Color.fromARGB(64, 33, 149, 243),
+                ),
+                buttonElevation: 5,
+                itemHeight: 45,
+                itemPadding: const EdgeInsets.only(left: 20, right: 14),
+                dropdownMaxHeight: 200,
+                dropdownWidth: 230,
+                dropdownPadding: null,
+                dropdownDecoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(7),
+                  color: Color.fromARGB(207, 96, 182, 253),
+                ),
+                dropdownElevation: 8,
+                scrollbarRadius: const Radius.circular(40),
+                scrollbarThickness: 6,
+                scrollbarAlwaysShow: true,
+                offset: const Offset(0, 0),
+                iconOnClick: Icon(Icons.arrow_drop_up_rounded),
+              ),
+            ),
+            ////////////////////////////////
+            IconButton(
+              iconSize: 28.5,
+              color: Colors.white,
+              onPressed: () {},
+              icon: Icon(Icons.language),
+            ),
+          ],
         ),
-      ),
-      SizedBox(
-        height: 20,
-      ),
-      Image.asset(
-        "images/sun.png",
-        width: 220,
-        height: 220,
-      ),
-      Text(
-        "27℃",
-        textAlign: TextAlign.center,
-        style: TextStyle(color: Colors.white, fontSize: 80, letterSpacing: 1.8),
-      ),
-    ],
-  ),
-);
+        SizedBox(
+          height: 30,
+        ),
+        Text(
+          "$universityName",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 22,
+            letterSpacing: 1.8,
+          ),
+        ),
+        SizedBox(
+          height: 20,
+        ),
+        Image.asset(
+          path!,
+          width: 220,
+          height: 220,
+        ),
+        Text(
+          "$tempreture ℃",
+          textAlign: TextAlign.center,
+          style:
+              TextStyle(color: Colors.white, fontSize: 80, letterSpacing: 1.8),
+        ),
+      ],
+    ),
+  );
+}
 
 Widget BottomButtonsContainer({Row? row}) {
   return Container(
@@ -190,7 +191,7 @@ ElevatedButton BottomButton(
           height: 20,
         ),
         Image.asset(
-          "images/sun.png",
+          imagePath!,
           width: 51,
           height: 51,
         )
