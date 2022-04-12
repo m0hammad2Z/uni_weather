@@ -47,7 +47,6 @@ class _HomePageState extends State<HomePage> {
   int detDayIndex(int dayDate) {
     for (int i = 0; i < data.length; i++) {
       if (data[i].date!.day == dayDate) {
-        print("day" + data[i].date!.day.toString());
         return i;
       }
     }
@@ -173,8 +172,7 @@ class _HomePageState extends State<HomePage> {
                           onpressed: () {
                             setState(() {
                               dayIndex = detDayIndex(tomorrow.day);
-                              print(data[detDayIndex(tomorrow.day)]
-                                  .weatherDescription);
+                              print(data[dayIndex].date!.day);
                             });
                           })),
                   Expanded(
@@ -189,8 +187,7 @@ class _HomePageState extends State<HomePage> {
                           onpressed: () {
                             setState(() {
                               dayIndex = detDayIndex(after_tomorrow.day);
-                              print(data[detDayIndex(after_tomorrow.day)]
-                                  .weatherDescription);
+                              print(data[dayIndex].date!.day);
                             });
                           })),
                   Expanded(
@@ -207,8 +204,7 @@ class _HomePageState extends State<HomePage> {
                           onpressed: () {
                             setState(() {
                               dayIndex = detDayIndex(after_after_tomorrow.day);
-                              print(data[detDayIndex(after_after_tomorrow.day)]
-                                  .weatherDescription);
+                              print(data[dayIndex].date!.day);
                             });
                           }))
                 ],
