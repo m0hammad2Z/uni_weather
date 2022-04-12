@@ -38,11 +38,21 @@ class _HomePageState extends State<HomePage> {
     "images/rain.png",
     "images/snow.png"
   ];
+  late String back;
 
-  int dayIndex = 0;
   late WeatherFactory ws;
   List<Weather> data = [];
-  late String back;
+
+  int dayIndex = 0;
+  int detDayIndex(int dayDate) {
+    for (int i = 0; i < data.length; i++) {
+      if (data[i].date!.day == dayDate) {
+        print("day" + data[i].date!.day.toString());
+        return i;
+      }
+    }
+    return 0;
+  }
 
   late double latitude = items[index]['late'];
   late double longtiude = items[index]['long'];
@@ -156,31 +166,31 @@ class _HomePageState extends State<HomePage> {
                       child: BottomButton(
                           imagePath: data.isEmpty
                               ? "images/snow.png"
-                              : detImage(
-                                  data[1].weatherConditionCode.toString()),
-                          dayName: data.isEmpty
-                              ? "Lodaing..."
-                              : DateFormat().add_EEEE().format(tomorrow),
+                              : detImage(data[detDayIndex(tomorrow.day)]
+                                  .weatherConditionCode
+                                  .toString()),
+                          dayName: DateFormat().add_EEEE().format(tomorrow),
                           onpressed: () {
                             setState(() {
-                              dayIndex = 1;
-                              print(dayIndex);
-                              print(data[dayIndex].weatherDescription);
+                              dayIndex = detDayIndex(tomorrow.day);
+                              print(data[detDayIndex(tomorrow.day)]
+                                  .weatherDescription);
                             });
                           })),
                   Expanded(
                       child: BottomButton(
                           imagePath: data.isEmpty
                               ? "images/snow.png"
-                              : detImage(
-                                  data[2].weatherConditionCode.toString()),
+                              : detImage(data[detDayIndex(after_tomorrow.day)]
+                                  .weatherConditionCode
+                                  .toString()),
                           dayName:
                               DateFormat().add_EEEE().format(after_tomorrow),
                           onpressed: () {
                             setState(() {
-                              dayIndex = 2;
-                              print(dayIndex);
-                              print(data[dayIndex].weatherDescription);
+                              dayIndex = detDayIndex(after_tomorrow.day);
+                              print(data[detDayIndex(after_tomorrow.day)]
+                                  .weatherDescription);
                             });
                           })),
                   Expanded(
@@ -188,15 +198,17 @@ class _HomePageState extends State<HomePage> {
                           imagePath: data.isEmpty
                               ? "images/snow.png"
                               : detImage(
-                                  data[3].weatherConditionCode.toString()),
+                                  data[detDayIndex(after_after_tomorrow.day)]
+                                      .weatherConditionCode
+                                      .toString()),
                           dayName: DateFormat()
                               .add_EEEE()
                               .format(after_after_tomorrow),
                           onpressed: () {
                             setState(() {
-                              dayIndex = 3;
-                              print(dayIndex);
-                              print(data[dayIndex].weatherDescription);
+                              dayIndex = detDayIndex(after_after_tomorrow.day);
+                              print(data[detDayIndex(after_after_tomorrow.day)]
+                                  .weatherDescription);
                             });
                           }))
                 ],

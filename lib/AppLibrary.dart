@@ -129,10 +129,10 @@ Widget orignalAppButton(
           "$universityName",
           textAlign: TextAlign.center,
           style: TextStyle(
-            color: Colors.white,
-            fontSize: 22,
-            letterSpacing: 1.8,
-          ),
+              color: Colors.white,
+              fontSize: 22,
+              letterSpacing: 1.8,
+              fontWeight: FontWeight.bold),
         ),
         SizedBox(
           height: 20,
@@ -185,7 +185,7 @@ ElevatedButton BottomButton(
               color: Colors.white,
               fontSize: 16,
               fontWeight: FontWeight.bold,
-              letterSpacing: 1.8),
+              letterSpacing: 1),
         ),
         SizedBox(
           height: 20,
