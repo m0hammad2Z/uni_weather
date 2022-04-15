@@ -127,40 +127,61 @@ class _HomePageState extends State<HomePage> {
             Expanded(
               flex: 5,
               child: orignalAppButton(
-                  universityName: items[index]['name'],
-                  onChange: ((value) {
-                    setState(() {
-                      selectedValue = value;
-                      for (int i = 0; i < items.length; i++) {
-                        if (value == items[i]['name']) {
-                          index = i;
-                        }
+                universityName: items[index]['name'],
+                universitylogo: items[index]['image'],
+                onChange: ((value) {
+                  setState(() {
+                    selectedValue = value;
+                    for (int i = 0; i < items.length; i++) {
+                      if (value == items[i]['name']) {
+                        index = i;
+                        selectedimages = items[index]['image'];
                       }
+                    }
 
-                      latitude = items[index]['late'];
-                      longtiude = items[index]['long'];
-                      queryWeather();
+                    latitude = items[index]['late'];
+                    longtiude = items[index]['long'];
+                    queryWeather();
 
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("${items[index]['name']}")));
-                    });
-                  }),
-                  path: data.isEmpty
-                      ? "images/snow.png"
-                      : detImage(
-                          data[dayIndex].weatherConditionCode.toString()),
-                  tempreture: data.isEmpty
-                      ? "Loading..."
-                      : "${data[dayIndex].temperature}".replaceAll(
-                          RegExp(
-                              '[A B C D E F G H I J K L M N O P Q R S T U V W X Y Z a b c d e f g h i j k l m n o p q r s t u v w x y z ]'),
-                          '')),
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text("${items[index]['name']}"),
+                        backgroundColor: Color.fromARGB(64, 33, 149, 243),
+                        duration: Duration(milliseconds: 1500),
+                      ),
+                    );
+                  });
+                }),
+                path: data.isEmpty
+                    ? "images/snow.png"
+                    : detImage(data[dayIndex].weatherConditionCode.toString()),
+                tempreture: data.isEmpty
+                    ? "Loading..."
+                    : "${data[dayIndex].temperature}".replaceAll(
+                        RegExp(
+                            '[A B C D E F G H I J K L M N O P Q R S T U V W X Y Z a b c d e f g h i j k l m n o p q r s t u v w x y z ]'),
+                        ''),
+              ),
             ),
             SizedBox(
               height: 160,
               child: BottomButtonsContainer(
                   row: Row(
                 children: [
+                  Expanded(
+                      child: BottomButton(
+                          imagePath: data.isEmpty
+                              ? "images/snow.png"
+                              : detImage(data[detDayIndex(today.day)]
+                                  .weatherConditionCode
+                                  .toString()),
+                          dayName: DateFormat().add_EEEE().format(today),
+                          onpressed: () {
+                            setState(() {
+                              dayIndex = detDayIndex(today.day);
+                              print(data[dayIndex].date!.day);
+                            });
+                          })),
                   Expanded(
                       child: BottomButton(
                           imagePath: data.isEmpty
@@ -187,23 +208,6 @@ class _HomePageState extends State<HomePage> {
                           onpressed: () {
                             setState(() {
                               dayIndex = detDayIndex(after_tomorrow.day);
-                              print(data[dayIndex].date!.day);
-                            });
-                          })),
-                  Expanded(
-                      child: BottomButton(
-                          imagePath: data.isEmpty
-                              ? "images/snow.png"
-                              : detImage(
-                                  data[detDayIndex(after_after_tomorrow.day)]
-                                      .weatherConditionCode
-                                      .toString()),
-                          dayName: DateFormat()
-                              .add_EEEE()
-                              .format(after_after_tomorrow),
-                          onpressed: () {
-                            setState(() {
-                              dayIndex = detDayIndex(after_after_tomorrow.day);
                               print(data[dayIndex].date!.day);
                             });
                           }))
