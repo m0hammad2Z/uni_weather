@@ -14,12 +14,17 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         elevatedButtonTheme: ElevatedButtonThemeData(
-            style: ButtonStyle(
-                elevation: MaterialStateProperty.resolveWith((states) {
-          return 0;
-        }), backgroundColor: MaterialStateProperty.resolveWith((states) {
-          return Colors.transparent;
-        },),),),
+          style: ButtonStyle(
+            elevation: MaterialStateProperty.resolveWith((states) {
+              return 0;
+            }),
+            backgroundColor: MaterialStateProperty.resolveWith(
+              (states) {
+                return Colors.transparent;
+              },
+            ),
+          ),
+        ),
       ),
       home: HomePage(),
     );

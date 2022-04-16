@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:rive/rive.dart';
 import 'package:uni_weathar/AppLibrary.dart';
 import 'package:weather/weather.dart';
 import 'package:intl/intl.dart';
@@ -57,6 +58,7 @@ class _HomePageState extends State<HomePage> {
   late double longtiude = items[index]['long'];
   void initState() {
     super.initState();
+
     Random randomNumberGen = Random();
     int index = randomNumberGen.nextInt(backWall.length);
     back = backWall[index];
