@@ -1,41 +1,28 @@
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'dart:async';
+import 'dart:math';
+import 'package:flutter/material.dart';
+import 'package:uni_weathar/AppLibrary.dart';
+import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
+import 'package:uni_weathar/HomePage.dart' as Hhh;
 
-class test extends StatefulWidget {
-  test({Key? key}) : super(key: key);
+int dayIndex = 0;
+List wData = [];
+double latitude = items[index]['late'];
+double longtiude = items[index]['long'];
+String weatherKey = "b732756f7d6e0dd0846edfcd99d09866";
+Future fetchWeatherData() async {
+  wData.clear();
+  var url =
+      "https://api.openweathermap.org/data/2.5/onecall?lat=$latitude&lon=$longtiude&appid=$weatherKey&lang=en&units=metric&exclude=hourly,current,alerts";
+  var response = await http.get(Uri.parse(url));
 
-  @override
-  State<test> createState() => _testState();
-}
+  if (response.statusCode == 200) {
+    //setState(() {});
+    wData.add(jsonDecode(response.body)); //weather data
 
-class _testState extends State<test> {
-  var data = [];
-
-  Future getData() async {
-    var res = await http.get(Uri.parse(
-        "https://api.openweathermap.org/data/2.5/onecall?lat=32.1030557&lon=36.181164&appid=b732756f7d6e0dd0846edfcd99d09866&units=metric&exclude=hourly,current"));
-
-    setState(() {
-      data.add(jsonDecode(res.body));
-    });
-  }
-
-  @override
-  void initState() {
-    getData();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        body: Center(
-      child: data.isEmpty || data == null
-          ? CircularProgressIndicator()
-          : Text(DateTime.fromMillisecondsSinceEpoch(
-                  data[0]['daily'][1]['dt'] * 1000)
-              .toString()),
-    ));
+  } else {
+    throw Exception('Failed to load album');
   }
 }
+

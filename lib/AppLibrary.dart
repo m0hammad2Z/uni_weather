@@ -4,7 +4,6 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 String? selectedValue = items[0]['name'];
 String selectedimages = items[index]['image'];
 int index = 0;
-
 List items = [
   {
     "name": 'Hashemite University HU',
@@ -71,6 +70,8 @@ List items = [
 Widget orignalAppButton(
     {required String? universityName,
     required String? universitylogo,
+    required String? wMain,
+    required String? wDescription,
     required String? tempreture,
     required String? path,
     required VoidCallback? onChange(value)}) {
@@ -186,12 +187,30 @@ Widget orignalAppButton(
               fontWeight: FontWeight.bold),
         ),
         SizedBox(
-          height: 20,
+          height: 15,
         ),
         Image.asset(
           path!,
           width: 220,
           height: 220,
+        ),
+        SizedBox(
+          height: 5,
+        ),
+        Text(
+          wMain!,
+          textAlign: TextAlign.center,
+          style:
+              TextStyle(color: Colors.white, fontSize: 35, letterSpacing: 1.8,fontWeight: FontWeight.bold),
+        ),
+        Text(
+          wDescription!,
+          textAlign: TextAlign.center,
+          style:
+              TextStyle(color: Colors.white, fontSize: 30, letterSpacing: 1.8,fontWeight: FontWeight.w300),
+        ),
+        SizedBox(
+          height: 10,
         ),
         Text(
           "$tempreture ℃",
@@ -250,5 +269,3 @@ ElevatedButton BottomButton(
     ),
   );
 }
-
-
