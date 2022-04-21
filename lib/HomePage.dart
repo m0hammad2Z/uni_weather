@@ -2,8 +2,10 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
 import 'package:uni_weathar/AppLibrary.dart';
-import 'package:weather/weather.dart';
 import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'dart:async';
 
 final now = DateTime.now();
 final today = DateTime(now.year, now.month, now.day);
@@ -41,43 +43,39 @@ class _HomePageState extends State<HomePage> {
   ];
   late String back;
 
-  late WeatherFactory ws;
-  List<Weather> data = [];
-
   int dayIndex = 0;
-  int detDayIndex(int dayDate) {
-    for (int i = 0; i < data.length; i++) {
-      if (data[i].date!.day == dayDate) {
-        return i;
-      }
+  List wData = [];
+  double latitude = items[index]['late'];
+  double longtiude = items[index]['long'];
+
+  Future fetchWeatherData() async {
+    wData.clear();
+    var response = await http.get(Uri.parse(
+        "https://api.openweathermap.org/data/2.5/onecall?lat=$latitude&lon=$longtiude&appid=b732756f7d6e0dd0846edfcd99d09866&units=metric&exclude=hourly,current"));
+
+    if (response.statusCode == 200) {
+      setState(() {
+        wData.add(jsonDecode(response.body));
+      });
+    } else {
+      throw Exception('Failed to load album');
     }
-    return 0;
   }
 
-  late double latitude = items[index]['late'];
-  late double longtiude = items[index]['long'];
-  void initState() {
-    super.initState();
+  String detTemp(int dayIndex) {
+    String rValue = "";
 
-    Random randomNumberGen = Random();
-    int index = randomNumberGen.nextInt(backWall.length);
-    back = backWall[index];
-    ws = new WeatherFactory("e27322e75defcb0c88cd2a1903f77f62");
-    queryWeather();
-  }
-
-  void queryWeather() async {
-    List<Weather> list =
-        await ws.fiveDayForecastByLocation(latitude, longtiude);
     setState(() {
-      data = list;
+      rValue = wData[0]['daily'][dayIndex]['temp']['day'].toString();
     });
+    return double.parse(rValue).toInt().toString();
   }
 
-  String detImage(String SWCCode) {
+  String detImage(int dayIndex) {
+    String id = wData[0]['daily'][dayIndex]['weather'][0]['id'].toString();
     String r = "";
     String re = "";
-    int WCCode = int.parse(SWCCode);
+    int WCCode = int.parse(id);
 
     if (WCCode >= 200 && WCCode <= 232)
       //Thunderstorm
@@ -106,10 +104,29 @@ class _HomePageState extends State<HomePage> {
 
     setState(() {
       re = r;
-      print(data[0].weatherConditionCode);
     });
 
     return re;
+  }
+
+  String detDay(int dayIndex) {
+    String d = "";
+    final day = DateTime.fromMillisecondsSinceEpoch(
+        wData[0]['daily'][dayIndex]['dt'] * 1000);
+
+    setState(() {
+      d = DateFormat.EEEE().format(day).toString();
+    });
+    return d;
+  }
+
+  void initState() {
+    super.initState();
+    fetchWeatherData();
+
+    Random randomNumberGen = Random();
+    int index = randomNumberGen.nextInt(backWall.length);
+    back = backWall[index];
   }
 
   @override
@@ -129,41 +146,34 @@ class _HomePageState extends State<HomePage> {
             Expanded(
               flex: 5,
               child: orignalAppButton(
-                universityName: items[index]['name'],
-                universitylogo: items[index]['image'],
-                onChange: ((value) {
-                  setState(() {
-                    selectedValue = value;
-                    for (int i = 0; i < items.length; i++) {
-                      if (value == items[i]['name']) {
-                        index = i;
-                        selectedimages = items[index]['image'];
+                  universityName: items[index]['name'],
+                  universitylogo: items[index]['image'],
+                  onChange: ((value) {
+                    setState(() {
+                      selectedValue = value;
+                      for (int i = 0; i < items.length; i++) {
+                        if (value == items[i]['name']) {
+                          index = i;
+                          selectedimages = items[index]['image'];
+                        }
                       }
-                    }
 
-                    latitude = items[index]['late'];
-                    longtiude = items[index]['long'];
-                    queryWeather();
+                      latitude = items[index]['late'];
+                      longtiude = items[index]['long'];
+                      dayIndex = 0;
+                      fetchWeatherData();
 
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text("${items[index]['name']}"),
-                        backgroundColor: Color.fromARGB(64, 33, 149, 243),
-                        duration: Duration(milliseconds: 1500),
-                      ),
-                    );
-                  });
-                }),
-                path: data.isEmpty
-                    ? "images/snow.png"
-                    : detImage(data[dayIndex].weatherConditionCode.toString()),
-                tempreture: data.isEmpty
-                    ? "Loading..."
-                    : "${data[dayIndex].temperature}".replaceAll(
-                        RegExp(
-                            '[A B C D E F G H I J K L M N O P Q R S T U V W X Y Z a b c d e f g h i j k l m n o p q r s t u v w x y z ]'),
-                        ''),
-              ),
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text("${items[index]['name']}"),
+                          backgroundColor: Color.fromARGB(64, 33, 149, 243),
+                          duration: Duration(milliseconds: 1500),
+                        ),
+                      );
+                    });
+                  }),
+                  path: wData.isEmpty ? "images/snow.png" : detImage(dayIndex),
+                  tempreture: wData.isEmpty ? "Loading..." : detTemp(dayIndex)),
             ),
             SizedBox(
               height: 160,
@@ -172,45 +182,32 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   Expanded(
                       child: BottomButton(
-                          imagePath: data.isEmpty
-                              ? "images/snow.png"
-                              : detImage(data[detDayIndex(today.day)]
-                                  .weatherConditionCode
-                                  .toString()),
-                          dayName: DateFormat().add_EEEE().format(today),
+                          imagePath:
+                              wData.isEmpty ? "images/snow.png" : detImage(0),
+                          dayName: wData.isEmpty ? "Loading" : detDay(0),
                           onpressed: () {
                             setState(() {
-                              dayIndex = detDayIndex(today.day);
-                              print(data[dayIndex].date!.day);
+                              dayIndex = 0;
                             });
                           })),
                   Expanded(
                       child: BottomButton(
-                          imagePath: data.isEmpty
-                              ? "images/snow.png"
-                              : detImage(data[detDayIndex(tomorrow.day)]
-                                  .weatherConditionCode
-                                  .toString()),
-                          dayName: DateFormat().add_EEEE().format(tomorrow),
+                          imagePath:
+                              wData.isEmpty ? "images/snow.png" : detImage(1),
+                          dayName: wData.isEmpty ? "Loading" : detDay(1),
                           onpressed: () {
                             setState(() {
-                              dayIndex = detDayIndex(tomorrow.day);
-                              print(data[dayIndex].date!.day);
+                              dayIndex = 1;
                             });
                           })),
                   Expanded(
                       child: BottomButton(
-                          imagePath: data.isEmpty
-                              ? "images/snow.png"
-                              : detImage(data[detDayIndex(after_tomorrow.day)]
-                                  .weatherConditionCode
-                                  .toString()),
-                          dayName:
-                              DateFormat().add_EEEE().format(after_tomorrow),
+                          imagePath:
+                              wData.isEmpty ? "images/snow.png" : detImage(2),
+                          dayName: wData.isEmpty ? "Loading" : detDay(2),
                           onpressed: () {
                             setState(() {
-                              dayIndex = detDayIndex(after_tomorrow.day);
-                              print(data[dayIndex].date!.day);
+                              dayIndex = 2;
                             });
                           }))
                 ],
