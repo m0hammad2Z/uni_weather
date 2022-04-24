@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:uni_weathar/HomePage.dart';
-import 'package:uni_weathar/test.dart';
+import 'package:flutter/services.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
   runApp(const MyApp());
 }
 

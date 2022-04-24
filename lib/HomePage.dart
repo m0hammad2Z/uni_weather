@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> {
   late String back;
 
   int dayIndex = 0;
-    List wData =  [];
+  List wData =  [];
   double latitude = items[index]['late'];
   double longtiude = items[index]['long'];
   String weatherKey = "b732756f7d6e0dd0846edfcd99d09866";
@@ -150,7 +150,6 @@ class _HomePageState extends State<HomePage> {
                           selectedimages = items[index]['image'];
                         }
                       }
-
                       latitude = items[index]['late'];
                       longtiude = items[index]['long'];
                       dayIndex = 0;

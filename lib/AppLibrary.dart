@@ -76,8 +76,11 @@ Widget orignalAppButton(
     required String? path,
     required VoidCallback? onChange(value)}) {
   return Container(
+    height: double.infinity,
+    width: double.infinity,
     margin: EdgeInsets.only(top: 40, left: 7, right: 7),
     child: Column(
+      mainAxisAlignment :MainAxisAlignment.spaceAround,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -175,7 +178,7 @@ Widget orignalAppButton(
         ),
         ///////////////////////////////////
         SizedBox(
-          height: 30,
+          height: 25,
         ),
         Text(
           "$universityName",
@@ -187,7 +190,7 @@ Widget orignalAppButton(
               fontWeight: FontWeight.bold),
         ),
         SizedBox(
-          height: 15,
+          height: 5,
         ),
         Image.asset(
           path!,
@@ -195,28 +198,35 @@ Widget orignalAppButton(
           height: 220,
         ),
         SizedBox(
-          height: 5,
+          height: 10,
         ),
-        Text(
-          wMain!,
-          textAlign: TextAlign.center,
-          style:
-              TextStyle(color: Colors.white, fontSize: 35, letterSpacing: 1.8,fontWeight: FontWeight.bold),
+        Expanded(
+          child: Text(
+            wMain!,
+            textAlign: TextAlign.center,
+            style:
+                TextStyle(color: Colors.white, fontSize: 35, letterSpacing: 1.8,fontWeight: FontWeight.bold),
+          ),
         ),
-        Text(
-          wDescription!,
-          textAlign: TextAlign.center,
-          style:
-              TextStyle(color: Colors.white, fontSize: 30, letterSpacing: 1.8,fontWeight: FontWeight.w300),
+        Expanded(
+          child: Text(
+            wDescription!,
+            textAlign: TextAlign.center,
+            style:
+                TextStyle(color: Colors.white, fontSize: 30, letterSpacing: 1.8,fontWeight: FontWeight.w300),
+          ),
         ),
         SizedBox(
           height: 10,
         ),
-        Text(
-          "$tempreture ℃",
-          textAlign: TextAlign.center,
-          style:
-              TextStyle(color: Colors.white, fontSize: 80, letterSpacing: 1.8),
+        Expanded(
+          flex: 2,
+          child: Text(
+            "$tempreture ℃",
+            textAlign: TextAlign.center,
+            style:
+                TextStyle(color: Colors.white, fontSize: 80, letterSpacing: 1.8),
+          ),
         ),
       ],
     ),
@@ -225,6 +235,7 @@ Widget orignalAppButton(
 
 Widget BottomButtonsContainer({Row? row}) {
   return Container(
+    width: double.infinity,
     decoration: const BoxDecoration(
         color: Color.fromARGB(24, 33, 149, 243),
         boxShadow: [
