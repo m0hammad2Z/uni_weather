@@ -1,72 +1,78 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import './HomePage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import './Language/locale_keys.g.dart';
 
 String? selectedValue = items[0]['name'];
 String selectedimages = items[index]['image'];
 int index = 0;
+bool isSelected = false;
 List items = [
   {
-    "name": 'Hashemite University HU',
+    "name": LocaleKeys.HUname.tr(),
     "late": 32.10305575958137,
     "long": 36.18116441243424,
     "image": "logo/HU.png",
   },
   {
-    "name": 'University of Jordan JU',
+    "name": LocaleKeys.JUname.tr(),
     "late": 32.01623213871158,
     "long": 35.86969580079599,
     "image": "logo/JU.png",
   },
   {
-    "name": 'Yarmouk University YU',
+    "name": LocaleKeys.YUname.tr(),
     "late": 32.53785169118971,
     "long": 35.85533089475168,
     "image": "logo/YU.png",
   },
   {
-    "name": 'Mutah University MU',
+    "name": LocaleKeys.MUname.tr(),
     "late": 31.093626056171253,
     "long": 35.71703133623311,
     "image": "logo/MU.png"
   },
   {
-    "name": 'University of Science and Technology JUST',
+    "name": LocaleKeys.JUSTname.tr(),
     "late": 32.4951387211905,
     "long": 35.99122570265341,
     "image": "logo/JUST.png",
   },
   {
-    "name": 'Al al-Bayt University AABU',
+    "name": LocaleKeys.AABUname.tr(),
     "late": 32.33309824256967,
     "long": 36.24104304498543,
     "image": "logo/AABU.png",
   },
   {
-    "name": 'Al-Balqa Applied University BAU',
+    "name": LocaleKeys.BAUname.tr(),
     "late": 32.02464961358468,
     "long": 35.71595675345758,
     "image": "logo/BAU.png"
   },
   {
-    "name": 'Al-Hussein Bin Talal University AHU',
+    "name": LocaleKeys.AHUname.tr(),
     "late": 30.267197845117078,
     "long": 35.678431429691344,
     "image": "logo/AHU.png"
   },
   {
-    "name": 'Tafila Technical University TTU',
+    "name": LocaleKeys.TTUname.tr(),
     "late": 30.841138557098464,
     "long": 35.64346204449333,
     "image": "logo/TTU.png",
   },
   {
-    "name": 'German Jordanian University GJU',
+    "name": LocaleKeys.GJUname.tr(),
     "late": 31.776765629168843,
     "long": 35.80239352965527,
     "image": "logo/GJU.png"
   },
 ];
 
+bool switchLang = true; 
 Widget orignalAppButton(
     {required String? universityName,
     required String? universitylogo,
@@ -74,13 +80,15 @@ Widget orignalAppButton(
     required String? wDescription,
     required String? tempreture,
     required String? path,
+    required BuildContext context,
+    required String urlCode,
     required VoidCallback? onChange(value)}) {
   return Container(
     height: double.infinity,
     width: double.infinity,
     margin: EdgeInsets.only(top: 40, left: 7, right: 7),
     child: Column(
-      mainAxisAlignment :MainAxisAlignment.spaceAround,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -97,7 +105,7 @@ Widget orignalAppButton(
                 isExpanded: true,
                 hint: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: const [
+                  children: <Widget>[
                     Icon(
                       Icons.school_sharp,
                       size: 20,
@@ -108,7 +116,7 @@ Widget orignalAppButton(
                     ),
                     Expanded(
                       child: Text(
-                        'Select University',
+                        LocaleKeys.selectUni.tr(),
                         style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.bold,
@@ -171,7 +179,24 @@ Widget orignalAppButton(
             IconButton(
               iconSize: 28.5,
               color: Colors.white,
-              onPressed: () {},
+              onPressed: () async {
+                if (isSelected == false) {
+                  isSelected = !isSelected;
+                  //urlCode = 'ar';//
+                  await context.setLocale(Locale('ar'));
+                  //print('false=>true');
+                } else {
+                  isSelected = !isSelected;
+                  //urlCode = 'en';//
+                  await context.setLocale(Locale('en'));
+                  //print('true=>false');
+                }
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                prefs.setBool("switchLang", isSelected);
+                //prefs.setString("switchUrl", urlCode);//
+                setState() {}
+                ;
+              },
               icon: Icon(Icons.language),
             ),
           ],
@@ -204,16 +229,22 @@ Widget orignalAppButton(
           child: Text(
             wMain!,
             textAlign: TextAlign.center,
-            style:
-                TextStyle(color: Colors.white, fontSize: 35, letterSpacing: 1.8,fontWeight: FontWeight.bold),
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 35,
+                letterSpacing: 1.8,
+                fontWeight: FontWeight.bold),
           ),
         ),
         Expanded(
           child: Text(
             wDescription!,
             textAlign: TextAlign.center,
-            style:
-                TextStyle(color: Colors.white, fontSize: 30, letterSpacing: 1.8,fontWeight: FontWeight.w300),
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 30,
+                letterSpacing: 1.8,
+                fontWeight: FontWeight.w300),
           ),
         ),
         SizedBox(
@@ -224,8 +255,8 @@ Widget orignalAppButton(
           child: Text(
             "$tempreture ℃",
             textAlign: TextAlign.center,
-            style:
-                TextStyle(color: Colors.white, fontSize: 80, letterSpacing: 1.8),
+            style: TextStyle(
+                color: Colors.white, fontSize: 80, letterSpacing: 1.8),
           ),
         ),
       ],

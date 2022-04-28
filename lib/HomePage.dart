@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uni_weathar/AppLibrary.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
@@ -36,14 +37,15 @@ class _HomePageState extends State<HomePage> {
   late String back;
 
   int dayIndex = 0;
-  List wData =  [];
+  List wData = [];
   double latitude = items[index]['late'];
   double longtiude = items[index]['long'];
   String weatherKey = "b732756f7d6e0dd0846edfcd99d09866";
+  String urlCodeLang = 'en';
   Future fetchWeatherData() async {
     wData.clear();
     var url =
-        "https://api.openweathermap.org/data/2.5/onecall?lat=$latitude&lon=$longtiude&appid=$weatherKey&lang=en&units=metric&exclude=hourly,current,alerts";
+        "https://api.openweathermap.org/data/2.5/onecall?lat=$latitude&lon=$longtiude&appid=$weatherKey&lang=$urlCodeLang&units=metric&exclude=hourly,current,alerts";
     var response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
@@ -54,7 +56,6 @@ class _HomePageState extends State<HomePage> {
       throw Exception('Failed to load album');
     }
   }
-
   String detTemp(int dayIndex) {
     String rValue = "";
 
@@ -109,18 +110,25 @@ class _HomePageState extends State<HomePage> {
     });
     return dayName;
   }
+  String stringValue = "no value";
+  dynamic getAllSavedData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool? value = prefs.getBool("switchLang");
+    //String? value2 = prefs.getString("switchUrl");//
+    if (value != null) stringValue = value.toString();
+    setState(() {});
+  }
 
   void initState() {
     super.initState();
     fetchWeatherData(); //very important
-
+    getAllSavedData();
     Random randomNumberGen = Random();
     int index = randomNumberGen.nextInt(backWall.length);
     back = backWall[index];
   }
-  
-  @override
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
@@ -137,35 +145,42 @@ class _HomePageState extends State<HomePage> {
             Expanded(
               flex: 5,
               child: orignalAppButton(
-                  universityName: items[index]['name'],
-                  universitylogo: items[index]['image'],
-                  wMain: (wData.length > 0 ? wData[0]['daily'][dayIndex]['weather'][0]['main'] : ''),
-                  wDescription: (wData.length > 0 ? wData[0]['daily'][dayIndex]['weather'][0]['description'] : ''),
-                  onChange: ((value) {
-                    setState(() {
-                      selectedValue = value;
-                      for (int i = 0; i < items.length; i++) {
-                        if (value == items[i]['name']) {
-                          index = i;
-                          selectedimages = items[index]['image'];
-                        }
+                urlCode: urlCodeLang,
+                universityName: items[index]['name'],
+                universitylogo: items[index]['image'],
+                wMain: (wData.length > 0
+                    ? wData[0]['daily'][dayIndex]['weather'][0]['main']
+                    : ''),
+                wDescription: (wData.length > 0
+                    ? wData[0]['daily'][dayIndex]['weather'][0]['description']
+                    : ''),
+                onChange: ((value) {
+                  setState(() {
+                    selectedValue = value;
+                    for (int i = 0; i < items.length; i++) {
+                      if (value == items[i]['name']) {
+                        index = i;
+                        selectedimages = items[index]['image'];
                       }
-                      latitude = items[index]['late'];
-                      longtiude = items[index]['long'];
-                      dayIndex = 0;
-                      fetchWeatherData();
+                    }
+                    latitude = items[index]['late'];
+                    longtiude = items[index]['long'];
+                    dayIndex = 0;
+                    fetchWeatherData();
 
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text("${items[index]['name']}"),
-                          backgroundColor: Color.fromARGB(64, 33, 149, 243),
-                          duration: Duration(milliseconds: 1500),
-                        ),
-                      );
-                    });
-                  }),
-                  path: wData.isEmpty ? "images/snow.png" : detImage(dayIndex),
-                  tempreture: wData.isEmpty ? "Loading..." : detTemp(dayIndex)),
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text("${items[index]['name']}"),
+                        backgroundColor: Color.fromARGB(64, 33, 149, 243),
+                        duration: Duration(milliseconds: 1500),
+                      ),
+                    );
+                  });
+                }),
+                path: wData.isEmpty ? "images/snow.png" : detImage(dayIndex),
+                tempreture: wData.isEmpty ? "Loading..." : detTemp(dayIndex),
+                context: context,
+              ),
             ),
             SizedBox(
               height: 160,
