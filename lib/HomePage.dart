@@ -40,7 +40,7 @@ class _HomePageState extends State<HomePage> {
   List wData = [];
   double latitude = items[index]['late'];
   double longtiude = items[index]['long'];
-  String weatherKey = "b732756f7d6e0dd0846edfcd99d09866";
+  String weatherKey = "Key";
   String urlCodeLang = 'en';
   Future fetchWeatherData() async {
     wData.clear();
